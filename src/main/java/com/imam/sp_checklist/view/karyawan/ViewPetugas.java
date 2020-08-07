@@ -1,0 +1,445 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.imam.sp_checklist.view.karyawan;
+
+import com.imam.sp_checklist.entity.master.Karyawan;
+import com.imam.sp_checklist.entity.transaksi.Jadwal;
+import com.imam.sp_checklist.manager.SpringManager;
+import com.imam.sp_checklist.service.JadwalService;
+import com.imam.sp_checklist.service.KaryawanService;
+import com.stripbandunk.jwidget.model.DynamicTableModel;
+import java.text.DateFormatSymbols;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.PatternSyntaxException;
+import javax.swing.RowFilter;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
+/**
+ *
+ * @author Imam-pc
+ */
+public class ViewPetugas extends javax.swing.JDialog {
+
+    private final DynamicTableModel<Karyawan> tableModelPengawas;
+    private final DynamicTableModel<Karyawan> tableModelPetugas;
+    private Karyawan pengawas;
+    private Karyawan petugas;
+    private List<Jadwal> listJadwal;
+    private Jadwal jadwal;
+    private Locale locale = Locale.forLanguageTag("in-ID");
+    private String monthHeader;
+    
+    public ViewPetugas() {
+        setModal(true);
+        
+        initComponents();
+        
+        tableModelPengawas = new DynamicTableModel<>(Karyawan.class);
+        tablePengawas.setDynamicModel(tableModelPengawas);
+        
+        tableModelPetugas = new DynamicTableModel<>(Karyawan.class);
+        tablePetugas.setDynamicModel(tableModelPetugas);
+        
+        blnChooser.setLocale(locale);
+        thnChooser.setLocale(locale);
+        
+      //  SimpleDateFormat fr = new SimpleDateFormat("MMMM", locale);
+       // String bln = fr.format(blnChooser.getMonth());
+                 
+       
+        
+    }
+    
+    public Karyawan CariKaryawanPengawas(){
+        
+        int month = blnChooser.getMonth();
+        int idx = 1;
+        int vm = month + idx;
+        
+        DateFormatSymbols dfs = new DateFormatSymbols(locale);
+        String namaBln = dfs.getMonths()[vm-1];
+        
+        Calendar cd = Calendar.getInstance();
+        cd.setTimeInMillis(vm);
+        monthHeader = cd.getDisplayName(Calendar.MONTH, Calendar.LONG, new Locale("ID"));
+        System.out.println("bulan cari jadwal: "+thnChooser.getYear());
+        System.out.println("bulan string cari jadwal: "+namaBln);
+        
+        
+        
+        KaryawanService service = SpringManager.getInstance().getBean(KaryawanService.class);
+        List<Karyawan> list = service.findPengawasByJadwalBlnThn(namaBln, thnChooser.getYear());
+        tableModelPengawas.clear();
+        list.forEach((value) -> {
+            tableModelPengawas.add(value);
+        });
+        
+        setLocationRelativeTo(this);
+        setVisible(true);
+        
+        return pengawas;
+    }
+    
+    public Karyawan LoadPetugas(){
+        
+        if(pengawas != null){
+            System.out.println("get id pengawas di loadPetugas: "+pengawas.getId());
+        
+            tableModelPetugas.clear();
+            KaryawanService service = SpringManager.getInstance().getBean(KaryawanService.class);
+            List<Karyawan> list = service.findPetugasByPengawas(pengawas.getId());
+        
+            list.forEach((value) -> {
+                tableModelPetugas.add(value);
+            });
+        }else{
+            petugas = null;
+        }
+        
+            
+            
+            return petugas;
+    }
+    
+    public Jadwal LoadJadwalByPengawasByPetugasByBlnByThn(){
+        
+        if(pengawas != null){
+            
+            System.out.println("get id pengawas di loadJadwal: "+pengawas.getId());
+            System.out.println("get id petugas di loadJadwal: "+petugas.getId());
+            System.out.println("get thn di loadJadwal: "+thnChooser.getYear());
+            int month = blnChooser.getMonth();
+            int idx = 1;
+            int vm = month + idx;
+
+            DateFormatSymbols dfs = new DateFormatSymbols(locale);
+            String namaBln = dfs.getMonths()[vm-1];
+            System.out.println("get bln di loadJadwal: "+vm);
+                JadwalService js = SpringManager.getInstance().getBean(JadwalService.class);
+                listJadwal = js.findJadwalByPengawasByPetugasByBln(pengawas.getId(), petugas.getId(), namaBln, thnChooser.getYear());
+        
+                listJadwal.forEach((jd) -> {
+                    jadwal = jd;
+            });
+            
+        }else{
+            jadwal = null;
+        }
+        
+        
+            
+            return jadwal;
+    }
+    
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        panelImageBackground1 = new com.imam.sp_checklist.widget.PanelImageBackground();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablePengawas = new com.stripbandunk.jwidget.JDynamicTable();
+        txtCariPengawas = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        blnChooser = new com.toedter.calendar.JMonthChooser();
+        thnChooser = new com.toedter.calendar.JYearChooser();
+        btnCariByJadwal = new javax.swing.JButton();
+        btnBatal = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablePetugas = new com.stripbandunk.jwidget.JDynamicTable();
+        jLabel2 = new javax.swing.JLabel();
+        txtCariPetugas = new javax.swing.JTextField();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+
+        panelImageBackground1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Cari Pengawas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 18))); // NOI18N
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Tabel Pengawas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
+        jPanel1.setOpaque(false);
+
+        tablePengawas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablePengawasMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablePengawas);
+
+        txtCariPengawas.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        txtCariPengawas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCariPengawasKeyPressed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/imam/sp_checklist/image/icons-search-25.png"))); // NOI18N
+
+        jLabel29.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        jLabel29.setText("Bln/Thn");
+
+        blnChooser.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        blnChooser.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+
+        btnCariByJadwal.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        btnCariByJadwal.setText("Cari Pengawas by Bln/Thn Jadwal");
+        btnCariByJadwal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCariByJadwalActionPerformed(evt);
+            }
+        });
+
+        btnBatal.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        btnBatal.setText("Batal");
+        btnBatal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBatalActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCariPengawas, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(blnChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(thnChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCariByJadwal)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnBatal)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtCariPengawas)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel29))
+                        .addGap(11, 11, 11))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(thnChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(blnChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnCariByJadwal)
+                            .addComponent(btnBatal))))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Tabel Petugas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Calibri", 1, 12))); // NOI18N
+        jPanel2.setOpaque(false);
+
+        tablePetugas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablePetugasMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tablePetugas);
+
+        jLabel2.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/imam/sp_checklist/image/icons-search-25.png"))); // NOI18N
+
+        txtCariPetugas.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        txtCariPetugas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCariPetugasKeyPressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCariPetugas)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCariPetugas)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout panelImageBackground1Layout = new javax.swing.GroupLayout(panelImageBackground1);
+        panelImageBackground1.setLayout(panelImageBackground1Layout);
+        panelImageBackground1Layout.setHorizontalGroup(
+            panelImageBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImageBackground1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelImageBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        panelImageBackground1Layout.setVerticalGroup(
+            panelImageBackground1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImageBackground1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        getContentPane().add(panelImageBackground1, java.awt.BorderLayout.CENTER);
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void tablePengawasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablePengawasMouseClicked
+        // TODO add your handling code here:
+        
+        if(evt.getClickCount()==2){
+            
+            pengawas = tableModelPengawas.get(tablePengawas.convertRowIndexToModel(tablePengawas.getSelectedRow()));
+            
+            LoadPetugas();
+            
+           
+        }
+        
+    }//GEN-LAST:event_tablePengawasMouseClicked
+
+    private void btnCariByJadwalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariByJadwalActionPerformed
+        // TODO add your handling code here:
+        
+        if(blnChooser.getMonth()!= -1){
+            
+            int month = blnChooser.getMonth();
+            int idx = 1;
+            int vm = month + idx;
+            
+            DateFormatSymbols dfs = new DateFormatSymbols(locale);
+            String namaBln = dfs.getMonths()[vm-1];
+
+            Calendar cd = Calendar.getInstance();
+            cd.setTimeInMillis(vm);
+            monthHeader = cd.getDisplayName(Calendar.MONTH, Calendar.LONG, new Locale("ID"));
+            System.out.println("thn cari jadwal btn: "+thnChooser.getYear());
+            System.out.println("bulan string cari jadwal btn: "+namaBln);
+
+
+
+            KaryawanService service = SpringManager.getInstance().getBean(KaryawanService.class);
+            List<Karyawan> list = service.findPengawasByJadwalBlnThn(namaBln, thnChooser.getYear());
+            tableModelPengawas.clear();
+            list.forEach((value) -> {
+                tableModelPengawas.add(value);
+            });
+            
+        }else{
+            
+            
+            
+        }
+        
+    }//GEN-LAST:event_btnCariByJadwalActionPerformed
+
+    private void tablePetugasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablePetugasMouseClicked
+        // TODO add your handling code here:
+        
+        
+        
+        if(evt.getClickCount()==2){
+            
+            petugas = tableModelPetugas.get(tablePetugas.convertRowIndexToModel(tablePetugas.getSelectedRow()));
+            
+            LoadJadwalByPengawasByPetugasByBlnByThn();
+            dispose();
+            
+        }
+        
+        
+    }//GEN-LAST:event_tablePetugasMouseClicked
+
+    private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_btnBatalActionPerformed
+
+    private void txtCariPengawasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariPengawasKeyPressed
+        // TODO add your handling code here:
+        
+        try{
+            String cari = txtCariPengawas.getText();
+            TableRowSorter<TableModel> sorter = (TableRowSorter<TableModel>) tablePengawas.getRowSorter();
+            sorter.setRowFilter(RowFilter.regexFilter(cari));
+        }catch(PatternSyntaxException ex){
+
+        }
+        
+    }//GEN-LAST:event_txtCariPengawasKeyPressed
+
+    private void txtCariPetugasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCariPetugasKeyPressed
+        // TODO add your handling code here:
+        try{
+            String cari = txtCariPetugas.getText();
+            TableRowSorter<TableModel> sorter = (TableRowSorter<TableModel>) tablePetugas.getRowSorter();
+            sorter.setRowFilter(RowFilter.regexFilter(cari));
+        }catch(PatternSyntaxException ex){
+
+        }
+    }//GEN-LAST:event_txtCariPetugasKeyPressed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.toedter.calendar.JMonthChooser blnChooser;
+    private javax.swing.JButton btnBatal;
+    private javax.swing.JButton btnCariByJadwal;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel29;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private com.imam.sp_checklist.widget.PanelImageBackground panelImageBackground1;
+    private com.stripbandunk.jwidget.JDynamicTable tablePengawas;
+    private com.stripbandunk.jwidget.JDynamicTable tablePetugas;
+    private com.toedter.calendar.JYearChooser thnChooser;
+    private javax.swing.JTextField txtCariPengawas;
+    private javax.swing.JTextField txtCariPetugas;
+    // End of variables declaration//GEN-END:variables
+}
