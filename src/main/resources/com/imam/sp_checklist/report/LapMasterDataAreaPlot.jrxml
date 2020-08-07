@@ -8,6 +8,7 @@
 	</parameter>
 	<parameter name="zona" class="java.lang.String"/>
 	<parameter name="lot" class="java.lang.String"/>
+	<parameter name="logo" class="java.awt.Image" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select tb.nama as basement, tz.nama as zona, lt.nama as lot, CONCAT(tb.nama,"-",tz.nama,"-",lt.nama) AS Area_Plot from tabel_basement tb
 inner join tabel_zona tz on tb.id = tz.id_basement
@@ -22,9 +23,9 @@ where tb.id like '%$P!{basement}%' AND tz.nama like '%$P!{zona}%' AND lt.nama li
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="23" splitType="Stretch">
+		<band height="68" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="5" width="490" height="18" uuid="79ecefa9-9184-4e72-96ab-04c01d96fd31"/>
+				<reportElement x="0" y="50" width="490" height="18" uuid="79ecefa9-9184-4e72-96ab-04c01d96fd31"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -36,6 +37,10 @@ where tb.id like '%$P!{basement}%' AND tz.nama like '%$P!{zona}%' AND lt.nama li
 				</textElement>
 				<text><![CDATA[LAPORAN DATA AREA PARKIR]]></text>
 			</staticText>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" isLazy="true">
+				<reportElement x="349" y="8" width="141" height="55" uuid="4f80232a-b413-4270-b70f-1386d0a58ed7"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<columnHeader>

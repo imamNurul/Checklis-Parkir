@@ -4,6 +4,7 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="akses" class="java.lang.String"/>
+	<parameter name="logo" class="java.awt.Image" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select * from tabel_hak_akses where nama like '%$P!{akses}%']]>
 	</queryString>
@@ -32,9 +33,9 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="23" splitType="Stretch">
+		<band height="65" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="5" width="300" height="18" uuid="79ecefa9-9184-4e72-96ab-04c01d96fd31"/>
+				<reportElement x="0" y="45" width="300" height="18" uuid="79ecefa9-9184-4e72-96ab-04c01d96fd31"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -46,12 +47,16 @@
 				</textElement>
 				<text><![CDATA[LAPORAN DATA HAK AKSES]]></text>
 			</staticText>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="164" y="18" width="136" height="45" uuid="b9fbb1a1-15e5-4214-80ec-d43ed3fd1d19"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<columnHeader>
-		<band height="18" splitType="Stretch">
+		<band height="28" splitType="Stretch">
 			<staticText>
-				<reportElement x="29" y="0" width="112" height="18" uuid="347fbb05-597d-49b1-b187-d1cb94a2a72d"/>
+				<reportElement x="29" y="6" width="112" height="18" uuid="347fbb05-597d-49b1-b187-d1cb94a2a72d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -64,7 +69,7 @@
 				<text><![CDATA[Kode Hak Akses]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="0" width="29" height="18" uuid="78650a8f-83bf-4106-8140-2634b483ec74"/>
+				<reportElement x="0" y="6" width="29" height="18" uuid="78650a8f-83bf-4106-8140-2634b483ec74"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -77,7 +82,7 @@
 				<text><![CDATA[No.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="141" y="0" width="159" height="18" uuid="f681489f-d150-49f0-b1be-f3f3e7758b9d"/>
+				<reportElement x="141" y="6" width="159" height="18" uuid="f681489f-d150-49f0-b1be-f3f3e7758b9d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -92,9 +97,9 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="29" splitType="Stretch">
+		<band height="39" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="0" width="29" height="29" uuid="58d5cd9a-0b1c-4d4c-b2ef-8cb6b170787d"/>
+				<reportElement x="0" y="4" width="29" height="29" uuid="58d5cd9a-0b1c-4d4c-b2ef-8cb6b170787d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -107,7 +112,7 @@
 				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="141" y="0" width="159" height="29" uuid="d511d143-c2c2-463e-9403-7b15e3f89ef5"/>
+				<reportElement x="141" y="4" width="159" height="29" uuid="d511d143-c2c2-463e-9403-7b15e3f89ef5"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -120,7 +125,7 @@
 				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="29" y="0" width="112" height="29" uuid="d8f2d0b2-352e-46a7-8059-9ac49edfad14"/>
+				<reportElement x="29" y="4" width="112" height="29" uuid="d8f2d0b2-352e-46a7-8059-9ac49edfad14"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -135,16 +140,16 @@
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="20">
+		<band height="34">
 			<textField evaluationTime="Report">
-				<reportElement x="258" y="0" width="40" height="20" forecolor="#000000" uuid="9246b428-30ea-417a-965e-f2af800b057d"/>
+				<reportElement x="258" y="6" width="40" height="20" forecolor="#000000" uuid="9246b428-30ea-417a-965e-f2af800b057d"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Calibri" size="11" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="207" y="0" width="51" height="20" forecolor="#000000" uuid="60f73cfd-64a8-4f0a-b528-a695d6a360ec"/>
+				<reportElement x="207" y="6" width="51" height="20" forecolor="#000000" uuid="60f73cfd-64a8-4f0a-b528-a695d6a360ec"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Calibri" size="11" isBold="false"/>
 				</textElement>

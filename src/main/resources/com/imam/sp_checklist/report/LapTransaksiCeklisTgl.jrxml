@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportDataSiswa" pageWidth="841" pageHeight="595" orientation="Landscape" columnWidth="821" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="24eaac14-8652-4e85-bdf6-46bb10ee3d17">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="51"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="pengawas" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -14,6 +14,7 @@
 	<parameter name="tglFrom" class="java.util.Date"/>
 	<parameter name="tglPrintFrom" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="tglPrintTo" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="logo" class="java.awt.Image" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select * from vLapCeklis
 where pengawas like '%$P!{pengawas}%'
@@ -137,9 +138,9 @@ order by pengawas, petugas, Tgl_ceklis ASC]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="23" splitType="Stretch">
+		<band height="56" splitType="Stretch">
 			<textField pattern="">
-				<reportElement x="0" y="0" width="821" height="23" uuid="915e9e0a-a33d-4e5c-b8e8-034253a67991"/>
+				<reportElement x="0" y="33" width="821" height="23" uuid="915e9e0a-a33d-4e5c-b8e8-034253a67991"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -152,6 +153,10 @@ order by pengawas, petugas, Tgl_ceklis ASC]]>
 				</textElement>
 				<textFieldExpression><![CDATA["LAPORAN DATA CHECKLIST KENDARAAN PERIODE" +"Dari "+ $P{tglPrintFrom}+" Sampai "+$P{tglPrintTo}]]></textFieldExpression>
 			</textField>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" isLazy="true">
+				<reportElement x="664" y="0" width="141" height="55" uuid="9d8cdad6-2405-49cc-aabc-874bd241abc9"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<columnHeader>

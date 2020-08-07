@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportDataSiswa" pageWidth="841" pageHeight="595" orientation="Landscape" columnWidth="821" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="24eaac14-8652-4e85-bdf6-46bb10ee3d17">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="51"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="pengawas" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -10,6 +10,7 @@
 	<parameter name="bulan" class="java.lang.String"/>
 	<parameter name="thn" class="java.util.List"/>
 	<parameter name="status" class="java.lang.String"/>
+	<parameter name="logo" class="java.awt.Image" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select * from vLapJadwal
 where pengawas like '%$P!{pengawas}%'
@@ -102,9 +103,9 @@ order by pengawas, petugas, tgl_detail asc]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="23" splitType="Stretch">
+		<band height="69" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="5" width="485" height="18" uuid="79ecefa9-9184-4e72-96ab-04c01d96fd31"/>
+				<reportElement x="0" y="37" width="485" height="18" uuid="79ecefa9-9184-4e72-96ab-04c01d96fd31"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -116,6 +117,10 @@ order by pengawas, petugas, tgl_detail asc]]>
 				</textElement>
 				<text><![CDATA[LAPORAN DATA JADWAL]]></text>
 			</staticText>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" isLazy="true">
+				<reportElement x="680" y="0" width="141" height="55" uuid="2a123854-849b-43f7-90a4-f179b7fc23bb"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<columnHeader>

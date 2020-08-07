@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportDataSiswa" pageWidth="841" pageHeight="595" orientation="Landscape" columnWidth="837" leftMargin="2" rightMargin="2" topMargin="2" bottomMargin="2" uuid="24eaac14-8652-4e85-bdf6-46bb10ee3d17">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="104"/>
+	<property name="ireport.y" value="77"/>
 	<parameter name="tgl" class="java.util.Date"/>
 	<parameter name="tglName" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="logo" class="java.awt.Image" isForPrompting="false">
@@ -811,7 +811,7 @@ where Tgl_ceklis = $P{tgl} and petugas = $P{petugas} and pengawas = $P{pengawas}
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Calibri" size="12"/>
 				</textElement>
-				<text><![CDATA[PENGAWAS PELAYANAN PARKIR]]></text>
+				<text><![CDATA[CAR PARK MANAGER]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="626" y="156" width="195" height="40" uuid="03e26f89-c5f3-496f-9e19-f1abd9826c58"/>

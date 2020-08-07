@@ -7,6 +7,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="sebagai" class="java.lang.String"/>
+	<parameter name="logo" class="java.awt.Image" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[SELECT id, nama, pengawas,
 (case when pengawas is true then 'Pengawas'
@@ -29,9 +30,9 @@ and pengawas IN ($P!{sebagai})]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="23" splitType="Stretch">
+		<band height="65" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="5" width="380" height="18" uuid="79ecefa9-9184-4e72-96ab-04c01d96fd31"/>
+				<reportElement x="0" y="47" width="380" height="18" uuid="79ecefa9-9184-4e72-96ab-04c01d96fd31"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -43,6 +44,10 @@ and pengawas IN ($P!{sebagai})]]>
 				</textElement>
 				<text><![CDATA[LAPORAN DATA JABATAN]]></text>
 			</staticText>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" isLazy="true">
+				<reportElement x="239" y="0" width="141" height="55" uuid="4bfccf55-c13b-4e8d-b5d8-d7165a40a273"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<columnHeader>

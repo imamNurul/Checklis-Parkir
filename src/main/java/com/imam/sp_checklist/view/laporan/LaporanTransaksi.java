@@ -13,6 +13,8 @@ import com.imam.sp_checklist.manager.SpringManager;
 import com.imam.sp_checklist.widget.ProgressbarLoading;
 import java.awt.Window;
 import java.beans.PropertyChangeEvent;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -24,6 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
@@ -31,6 +34,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
@@ -576,90 +580,98 @@ public class LaporanTransaksi extends javax.swing.JPanel {
 
                 @Override
                 public void execute(Connection connection) throws SQLException {
-                    String inputStream = "/com/imam/sp_checklist/report/LapTransaksiJadwal.jasper";
-                    String varPgn = comboPengawasJadwal.getSelectedItem().toString();
-                    String varPns = comboPetugasJadwal.getSelectedItem().toString();
-                    String[] splitPgn;
-                    String[] splitPns;
-                    String varSplitPgn;
-                    String varSplitGrup;
-                    if(varPgn.equals("All")){
-                        varSplitPgn = "";
-                    }else{
-                        splitPgn = varPgn.split("-");
-                        System.out.println("Split Pengawas jadwal: "+Arrays.toString(splitPgn));
-                        varSplitPgn = splitPgn[0];
-                        System.out.println("Split Pengawas jadwal string: "+varSplitPgn);
-                    }
-                    if(varPns.equals("All")){
-                        varSplitGrup = "";
-                    }else{
-                        splitPns = varPns.split("-");
-                        System.out.println("Split Petugas jadwal: "+Arrays.toString(splitPns));
-                        varSplitGrup = splitPns[0];
-                        System.out.println("Split Petugas jadwal string: "+varSplitGrup);
-                    }
-                    String flag;
-                    switch (comboStatus.getSelectedIndex()) {
-                        case 0:
-                            flag = "true,false";
-                            break;
-                        case 1:
-                            flag = "true";
-                            break;
-                        default:
-                            flag = "false";
-                            break;
-                    }
-                    String bulan;
-                    int[] tahun;
-                    if(rbAllJadwal.isSelected()==true){
-                        
-                        bulan = "";
-                        tahun = new int[]{};
-                    }else{
-                        
-                        int month = blnCuserJadwal.getMonth();
-                        DateFormatSymbols dfs = new DateFormatSymbols(locale);
-                        String namaBln = dfs.getMonths()[month];
-                        System.out.println("Bulan String: "+namaBln);
-                        
-                        bulan = namaBln;
-                        tahun = new int[]{thnCuserJadwal.getYear()};
-                        
-                    }
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("pengawas", varSplitPgn);
-                    map.put("petugas", varSplitGrup);
-                    map.put("bulan", bulan);
-                    map.put("thn", tahun);
-                    map.put("status", flag);
-                    map.put(JRParameter.REPORT_CONNECTION, connection);
-                    map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
-                    final SwingWorker<JasperPrint, String> worker = new SwingWorker<JasperPrint, String>(){
-                        
-                        @Override
-                        protected JasperPrint doInBackground() throws Exception {
-                            JasperPrint print;
-                            print = displayReport(map, inputStream, connection);
+                    try {
+                        String inputStream = "/com/imam/sp_checklist/report/LapTransaksiJadwal.jasper";
+                        String varPgn = comboPengawasJadwal.getSelectedItem().toString();
+                        String varPns = comboPetugasJadwal.getSelectedItem().toString();
+                        String[] splitPgn;
+                        String[] splitPns;
+                        String varSplitPgn;
+                        String varSplitGrup;
+                        if(varPgn.equals("All")){
+                            varSplitPgn = "";
+                        }else{
+                            splitPgn = varPgn.split("-");
+                            System.out.println("Split Pengawas jadwal: "+Arrays.toString(splitPgn));
+                            varSplitPgn = splitPgn[0];
+                            System.out.println("Split Pengawas jadwal string: "+varSplitPgn);
+                        }
+                        if(varPns.equals("All")){
+                            varSplitGrup = "";
+                        }else{
+                            splitPns = varPns.split("-");
+                            System.out.println("Split Petugas jadwal: "+Arrays.toString(splitPns));
+                            varSplitGrup = splitPns[0];
+                            System.out.println("Split Petugas jadwal string: "+varSplitGrup);
+                        }
+                        String flag;
+                        switch (comboStatus.getSelectedIndex()) {
+                            case 0:
+                                flag = "true,false";
+                                break;
+                            case 1:
+                                flag = "true";
+                                break;
+                            default:
+                                flag = "false";
+                                break;
+                        }
+                        String bulan;
+                        int[] tahun;
+                        if(rbAllJadwal.isSelected()==true){
                             
-                            return print;
+                            bulan = "";
+                            tahun = new int[]{};
+                        }else{
+                            
+                            int month = blnCuserJadwal.getMonth();
+                            DateFormatSymbols dfs = new DateFormatSymbols(locale);
+                            String namaBln = dfs.getMonths()[month];
+                            System.out.println("Bulan String: "+namaBln);
+                            
+                            bulan = namaBln;
+                            tahun = new int[]{thnCuserJadwal.getYear()};
+                            
                         }
+                        InputStream logo = getClass().getResourceAsStream("/com/imam/sp_checklist/report/secure-logo.png");
                         
-                    };
-                    Window win = SwingUtilities.getWindowAncestor((AbstractButton)evt.getSource());
-                    ProgressbarLoading loding = new ProgressbarLoading();
-                    worker.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
-                        if (evt1.getPropertyName().equals("state")) {
-                            if (evt1.getNewValue() == SwingWorker.StateValue.DONE) {
-                                loding.dispose();
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("pengawas", varSplitPgn);
+                        map.put("petugas", varSplitGrup);
+                        map.put("bulan", bulan);
+                        map.put("thn", tahun);
+                        map.put("status", flag);
+                        map.put("logo", ImageIO.read(new ByteArrayInputStream(JRLoader.loadBytes(logo))));
+                        
+                        map.put(JRParameter.REPORT_CONNECTION, connection);
+                        map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
+                        final SwingWorker<JasperPrint, String> worker = new SwingWorker<JasperPrint, String>(){
+                            
+                            @Override
+                            protected JasperPrint doInBackground() throws Exception {
+                                JasperPrint print;
+                                print = displayReport(map, inputStream, connection);
+                                
+                                return print;
                             }
-                        }
-                    });
-                    worker.execute();
-                    loding.pack();
-                    loding.setLocationRelativeTo(win);
-                    loding.setVisible(true);
+                            
+                        };
+                        Window win = SwingUtilities.getWindowAncestor((AbstractButton)evt.getSource());
+                        ProgressbarLoading loding = new ProgressbarLoading();
+                        worker.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
+                            if (evt1.getPropertyName().equals("state")) {
+                                if (evt1.getNewValue() == SwingWorker.StateValue.DONE) {
+                                    loding.dispose();
+                                }
+                            }
+                        });
+                        worker.execute();
+                        loding.pack();
+                        loding.setLocationRelativeTo(win);
+                        loding.setVisible(true);
+                    } catch (JRException | IOException ex) {
+                        Logger.getLogger(LaporanTransaksi.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             });
             session.close();
@@ -700,92 +712,100 @@ public class LaporanTransaksi extends javax.swing.JPanel {
 
                 @Override
                 public void execute(Connection connection) throws SQLException {
-                    String inputStream;
-                    String varPgn = comboPengawasCeklis.getSelectedItem().toString();
-                    String varPns = comboPetugasCeklis.getSelectedItem().toString();
-                    String[] splitPgn;
-                    String[] splitPns;
-                    String varSplitPgn;
-                    String varSplitGrup;
-                    if(varPgn.equals("All")){
-                        varSplitPgn = "";
-                    }else{
-                        splitPgn = varPgn.split("-");
-                        System.out.println("Split Pengawas jadwal: "+Arrays.toString(splitPgn));
-                        varSplitPgn = splitPgn[0];
-                        System.out.println("Split Pengawas jadwal string: "+varSplitPgn);
-                    }
-                    if(varPns.equals("All")){
-                        varSplitGrup = "";
-                    }else{
-                        splitPns = varPns.split("-");
-                        System.out.println("Split Petugas jadwal: "+Arrays.toString(splitPns));
-                        varSplitGrup = splitPns[0];
-                        System.out.println("Split Petugas jadwal string: "+varSplitGrup);
-                    }
-                    String bulan;
-                    int[] tahun;
-                    if(rbAllJadwal.isSelected()==true){
-                        
-                        bulan = "";
-                        tahun = new int[]{};
-                    }else{
-                        
-                        int month = blnCuserJadwal.getMonth();
-                        DateFormatSymbols dfs = new DateFormatSymbols(locale);
-                        String namaBln = dfs.getMonths()[month];
-                        System.out.println("Bulan String: "+namaBln);
-                        
-                        bulan = namaBln;
-                        tahun = new int[]{thnCuserJadwal.getYear()};
-                        
-                    }
-                    String sip;
-                    if(comboShift.getSelectedIndex() == 0){
-                        sip = "";
-                    }else{
-                        sip = comboShift.getSelectedItem().toString();
-                    }
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("pengawas", varSplitPgn);
-                    map.put("petugas", varSplitGrup);
-                    map.put("bulan", bulan);
-                    map.put("thn", tahun);
-                    map.put("shift", sip);
-                    if(rbAllCeklisTgl.isSelected()==true){
-                        inputStream = "/com/imam/sp_checklist/report/LapTransaksiCeklis.jasper";
-                    }else{
-                        inputStream = "/com/imam/sp_checklist/report/LapTransaksiCeklisTgl.jasper";
-                        
-                        map.put("tglFrom", new java.sql.Date(dateCeklisDari.getDate().getTime()));
-                        map.put("tglTo", new java.sql.Date(dateCeklisSampai.getDate().getTime()));
-                    }
-                    map.put(JRParameter.REPORT_CONNECTION, connection);
-                    map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
-                    final SwingWorker<JasperPrint, String> worker = new SwingWorker<JasperPrint, String>(){
-                        
-                        @Override
-                        protected JasperPrint doInBackground() throws Exception {
-                            JasperPrint print;
-                            print = displayReport(map, inputStream, connection);
+                    try {
+                        String inputStream;
+                        String varPgn = comboPengawasCeklis.getSelectedItem().toString();
+                        String varPns = comboPetugasCeklis.getSelectedItem().toString();
+                        String[] splitPgn;
+                        String[] splitPns;
+                        String varSplitPgn;
+                        String varSplitGrup;
+                        if(varPgn.equals("All")){
+                            varSplitPgn = "";
+                        }else{
+                            splitPgn = varPgn.split("-");
+                            System.out.println("Split Pengawas jadwal: "+Arrays.toString(splitPgn));
+                            varSplitPgn = splitPgn[0];
+                            System.out.println("Split Pengawas jadwal string: "+varSplitPgn);
+                        }
+                        if(varPns.equals("All")){
+                            varSplitGrup = "";
+                        }else{
+                            splitPns = varPns.split("-");
+                            System.out.println("Split Petugas jadwal: "+Arrays.toString(splitPns));
+                            varSplitGrup = splitPns[0];
+                            System.out.println("Split Petugas jadwal string: "+varSplitGrup);
+                        }
+                        String bulan;
+                        int[] tahun;
+                        if(rbAllJadwal.isSelected()==true){
                             
-                            return print;
+                            bulan = "";
+                            tahun = new int[]{};
+                        }else{
+                            
+                            int month = blnCuserJadwal.getMonth();
+                            DateFormatSymbols dfs = new DateFormatSymbols(locale);
+                            String namaBln = dfs.getMonths()[month];
+                            System.out.println("Bulan String: "+namaBln);
+                            
+                            bulan = namaBln;
+                            tahun = new int[]{thnCuserJadwal.getYear()};
+                            
                         }
+                        String sip;
+                        if(comboShift.getSelectedIndex() == 0){
+                            sip = "";
+                        }else{
+                            sip = comboShift.getSelectedItem().toString();
+                        }
+                        InputStream logo = getClass().getResourceAsStream("/com/imam/sp_checklist/report/secure-logo.png");
                         
-                    };
-                    Window win = SwingUtilities.getWindowAncestor((AbstractButton)evt.getSource());
-                    ProgressbarLoading loding = new ProgressbarLoading();
-                    worker.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
-                        if (evt1.getPropertyName().equals("state")) {
-                            if (evt1.getNewValue() == SwingWorker.StateValue.DONE) {
-                                loding.dispose();
-                            }
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("pengawas", varSplitPgn);
+                        map.put("petugas", varSplitGrup);
+                        map.put("bulan", bulan);
+                        map.put("thn", tahun);
+                        map.put("shift", sip);
+                        map.put("logo", ImageIO.read(new ByteArrayInputStream(JRLoader.loadBytes(logo))));
+                        
+                        if(rbAllCeklisTgl.isSelected()==true){
+                            inputStream = "/com/imam/sp_checklist/report/LapTransaksiCeklis.jasper";
+                        }else{
+                            inputStream = "/com/imam/sp_checklist/report/LapTransaksiCeklisTgl.jasper";
+                            
+                            map.put("tglFrom", new java.sql.Date(dateCeklisDari.getDate().getTime()));
+                            map.put("tglTo", new java.sql.Date(dateCeklisSampai.getDate().getTime()));
                         }
-                    });
-                    worker.execute();
-                    loding.pack();
-                    loding.setLocationRelativeTo(win);
-                    loding.setVisible(true);
+                        map.put(JRParameter.REPORT_CONNECTION, connection);
+                        map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
+                        final SwingWorker<JasperPrint, String> worker = new SwingWorker<JasperPrint, String>(){
+                            
+                            @Override
+                            protected JasperPrint doInBackground() throws Exception {
+                                JasperPrint print;
+                                print = displayReport(map, inputStream, connection);
+                                
+                                return print;
+                            }
+                            
+                        };
+                        Window win = SwingUtilities.getWindowAncestor((AbstractButton)evt.getSource());
+                        ProgressbarLoading loding = new ProgressbarLoading();
+                        worker.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
+                            if (evt1.getPropertyName().equals("state")) {
+                                if (evt1.getNewValue() == SwingWorker.StateValue.DONE) {
+                                    loding.dispose();
+                                }
+                            }
+                        });
+                        worker.execute();
+                        loding.pack();
+                        loding.setLocationRelativeTo(win);
+                        loding.setVisible(true);
+                    } catch (JRException | IOException ex) {
+                        Logger.getLogger(LaporanTransaksi.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             });
             session.close();

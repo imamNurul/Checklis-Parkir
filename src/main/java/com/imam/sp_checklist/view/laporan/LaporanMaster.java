@@ -21,6 +21,8 @@ import com.imam.sp_checklist.manager.SpringManager;
 import com.imam.sp_checklist.widget.ProgressbarLoading;
 import java.awt.Window;
 import java.beans.PropertyChangeEvent;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -31,6 +33,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
@@ -38,6 +41,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
@@ -905,71 +909,84 @@ public class LaporanMaster extends javax.swing.JPanel {
 
                 @Override
                 public void execute(Connection connection) throws SQLException {
-                    String varJbtn = comboJabatanKarywan.getSelectedItem().toString();
-                    String varKrywn = comboKaryawan.getSelectedItem().toString();
-                    String[] splitJbtn;
-                    String[] splitKrywn;
-                    String varSplitJbtn;
-                    String varSplitKrywn;
-                    if(varJbtn.equals("All")){
-                        varSplitJbtn = "";
-                    }else{
-                        splitJbtn = varJbtn.split(" - ");
-                        System.out.println("Split Jabatan: "+Arrays.toString(splitJbtn));
-                        varSplitJbtn = splitJbtn[0];
-                        System.out.println("Split Jabatan string: "+varSplitJbtn);
-                    }
-                    if(varKrywn.equals("All")){
-                        varSplitKrywn = "";
-                    }else{
-                        splitKrywn = varKrywn.split("-");
-                        System.out.println("Split karywan: "+Arrays.toString(splitKrywn));
-                        varSplitKrywn = splitKrywn[0];
-                        System.out.println("Split karywan string: "+varSplitKrywn);
-                    }
-                    String flag;
-                    switch (comboAktif.getSelectedIndex()) {
-                        case 0:
-                            flag = "true,false";
-                            break;
-                        case 1:
-                            flag = "true";
-                            break;
-                        default:
-                            flag = "false";
-                            break;
-                    }
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("jabatan", varSplitJbtn);
-                    map.put("karyawan", varSplitKrywn);
-                    map.put("flag", flag);
-                    map.put(JRParameter.REPORT_CONNECTION, connection);
-                    map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
-                    
-                    final SwingWorker<JasperPrint, String> worker = new SwingWorker<JasperPrint, String>(){
+                    try {
+                        String varJbtn = comboJabatanKarywan.getSelectedItem().toString();
+                        String varKrywn = comboKaryawan.getSelectedItem().toString();
+                        String[] splitJbtn;
+                        String[] splitKrywn;
+                        String varSplitJbtn;
+                        String varSplitKrywn;
+                        if(varJbtn.equals("All")){
+                            varSplitJbtn = "";
+                        }else{
+                            splitJbtn = varJbtn.split(" - ");
+                            System.out.println("Split Jabatan: "+Arrays.toString(splitJbtn));
+                            varSplitJbtn = splitJbtn[0];
+                            System.out.println("Split Jabatan string: "+varSplitJbtn);
+                        }
+                        if(varKrywn.equals("All")){
+                            varSplitKrywn = "";
+                        }else{
+                            splitKrywn = varKrywn.split("-");
+                            System.out.println("Split karywan: "+Arrays.toString(splitKrywn));
+                            varSplitKrywn = splitKrywn[0];
+                            System.out.println("Split karywan string: "+varSplitKrywn);
+                        }
+                        String flag;
+                        switch (comboAktif.getSelectedIndex()) {
+                            case 0:
+                                flag = "true,false";
+                                break;
+                            case 1:
+                                flag = "true";
+                                break;
+                            default:
+                                flag = "false";
+                                break;
+                        }
                         
-                        @Override
-                        protected JasperPrint doInBackground() throws Exception {
-                            JasperPrint print;
-                            print = displayReport(map, pathLapKaryawan, connection);
+                        
+                        InputStream logo = getClass().getResourceAsStream("/com/imam/sp_checklist/report/secure-logo.png");
+                        
+                        
+                        
+                        
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("jabatan", varSplitJbtn);
+                        map.put("karyawan", varSplitKrywn);
+                        map.put("flag", flag);
+                        map.put("logo", ImageIO.read(new ByteArrayInputStream(JRLoader.loadBytes(logo))));
+                        
+                        map.put(JRParameter.REPORT_CONNECTION, connection);
+                        map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
+                        
+                        final SwingWorker<JasperPrint, String> worker = new SwingWorker<JasperPrint, String>(){
                             
-                            return print;
-                        }
-                        
-                    };
-                    Window win = SwingUtilities.getWindowAncestor((AbstractButton)evt.getSource());
-                    ProgressbarLoading loding = new ProgressbarLoading();
-                    worker.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
-                        if (evt1.getPropertyName().equals("state")) {
-                            if (evt1.getNewValue() == SwingWorker.StateValue.DONE) {
-                                loding.dispose();
+                            @Override
+                            protected JasperPrint doInBackground() throws Exception {
+                                JasperPrint print;
+                                print = displayReport(map, pathLapKaryawan, connection);
+                                
+                                return print;
                             }
-                        }
-                    });
-                    worker.execute();
-                    loding.pack();
-                    loding.setLocationRelativeTo(win);
-                    loding.setVisible(true);
+                            
+                        };
+                        Window win = SwingUtilities.getWindowAncestor((AbstractButton)evt.getSource());
+                        ProgressbarLoading loding = new ProgressbarLoading();
+                        worker.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
+                            if (evt1.getPropertyName().equals("state")) {
+                                if (evt1.getNewValue() == SwingWorker.StateValue.DONE) {
+                                    loding.dispose();
+                                }
+                            }
+                        });
+                        worker.execute();
+                        loding.pack();
+                        loding.setLocationRelativeTo(win);
+                        loding.setVisible(true);
+                    } catch (IOException | JRException ex) {
+                        Logger.getLogger(LaporanMaster.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             });
             session.close();
@@ -983,6 +1000,7 @@ public class LaporanMaster extends javax.swing.JPanel {
             Session session = sessionFactory.openSession();
             
             session.doWork((Connection connection) -> {
+            try {
                 String varJbtn = comboJabatanJabatan.getSelectedItem().toString();
                 String varSebgai = comboSebagai.getSelectedItem().toString();
                 String[] splitJbtn;
@@ -1007,9 +1025,13 @@ public class LaporanMaster extends javax.swing.JPanel {
                         varSplitKrywn = "false";
                         break;
                 }
+                InputStream logo = getClass().getResourceAsStream("/com/imam/sp_checklist/report/secure-logo.png");
+                
                 Map<String, Object> map = new HashMap<>();
                 map.put("jabatan", varSplitJbtn);
                 map.put("sebagai", varSplitKrywn);
+                map.put("logo", ImageIO.read(new ByteArrayInputStream(JRLoader.loadBytes(logo))));
+                
                 map.put(JRParameter.REPORT_CONNECTION, connection);
                 map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
                 
@@ -1037,6 +1059,9 @@ public class LaporanMaster extends javax.swing.JPanel {
                 loding.pack();
                 loding.setLocationRelativeTo(win);
                 loding.setVisible(true);
+            } catch (JRException | IOException ex) {
+                Logger.getLogger(LaporanMaster.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
             session.close();
         
@@ -1050,6 +1075,7 @@ public class LaporanMaster extends javax.swing.JPanel {
             Session session = sessionFactory.openSession();
             
             session.doWork((Connection connection) -> {
+            try {
                 String varMerk = txtMerk.getText();
                 String varJenis = comboJenis.getSelectedItem().toString();
                 String[] arrayJenis;
@@ -1058,9 +1084,14 @@ public class LaporanMaster extends javax.swing.JPanel {
                 }else{
                     arrayJenis = new String[] {varJenis};
                 }
+                InputStream logo = getClass().getResourceAsStream("/com/imam/sp_checklist/report/secure-logo.png");
+                
+                
                 Map<String, Object> map = new HashMap<>();
                 map.put("js", arrayJenis);
                 map.put("merk", varMerk);
+                map.put("logo", ImageIO.read(new ByteArrayInputStream(JRLoader.loadBytes(logo))));
+                
                 map.put(JRParameter.REPORT_CONNECTION, connection);
                 map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
                 
@@ -1088,6 +1119,9 @@ public class LaporanMaster extends javax.swing.JPanel {
                 loding.pack();
                 loding.setLocationRelativeTo(win);
                 loding.setVisible(true);
+            } catch (JRException | IOException ex) {
+                Logger.getLogger(LaporanMaster.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
             session.close();
         
@@ -1100,6 +1134,7 @@ public class LaporanMaster extends javax.swing.JPanel {
             Session session = sessionFactory.openSession();
             
             session.doWork((Connection connection) -> {
+            try {
                 String varBs = comboBasement.getSelectedItem().toString();
                 String[] arrayBs;
                 String varSplitBs;
@@ -1111,8 +1146,12 @@ public class LaporanMaster extends javax.swing.JPanel {
                     varSplitBs = arrayBs[0];
                     System.out.println("Split Basement string: "+varSplitBs);
                 }
+                InputStream logo = getClass().getResourceAsStream("/com/imam/sp_checklist/report/secure-logo.png");
+                
                 Map<String, Object> map = new HashMap<>();
                 map.put("basement", varSplitBs);
+                map.put("logo", ImageIO.read(new ByteArrayInputStream(JRLoader.loadBytes(logo))));
+                
                 map.put(JRParameter.REPORT_CONNECTION, connection);
                 map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
                 final SwingWorker<JasperPrint, String> worker = new SwingWorker<JasperPrint, String>(){
@@ -1139,6 +1178,9 @@ public class LaporanMaster extends javax.swing.JPanel {
                 loding.pack();
                 loding.setLocationRelativeTo(win);
                 loding.setVisible(true);
+            } catch (JRException | IOException ex) {
+                Logger.getLogger(LaporanMaster.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
             session.close();
         
@@ -1157,45 +1199,53 @@ public class LaporanMaster extends javax.swing.JPanel {
 
                 @Override
                 public void execute(Connection connection) throws SQLException {
-                    String varZona = comboZona.getSelectedItem().toString();
-                    String[] arrayZona;
-                    String varSplitZona;
-                    if(varZona.equals("All")){
-                        varSplitZona = "";
-                    }else{
-                        arrayZona = varZona.split(" - ");
-                        System.out.println("Split Zona: "+Arrays.toString(arrayZona));
-                        varSplitZona = arrayZona[0];
-                        System.out.println("Split Zona string: "+varSplitZona);
-                    }
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("zona", varSplitZona);
-                    map.put(JRParameter.REPORT_CONNECTION, connection);
-                    map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
-                    final SwingWorker<JasperPrint, String> worker = new SwingWorker<JasperPrint, String>(){
+                    try {
+                        String varZona = comboZona.getSelectedItem().toString();
+                        String[] arrayZona;
+                        String varSplitZona;
+                        if(varZona.equals("All")){
+                            varSplitZona = "";
+                        }else{
+                            arrayZona = varZona.split(" - ");
+                            System.out.println("Split Zona: "+Arrays.toString(arrayZona));
+                            varSplitZona = arrayZona[0];
+                            System.out.println("Split Zona string: "+varSplitZona);
+                        }
+                        InputStream logo = getClass().getResourceAsStream("/com/imam/sp_checklist/report/secure-logo.png");
                         
-                        @Override
-                        protected JasperPrint doInBackground() throws Exception {
-                            JasperPrint print;
-                            print = displayReport(map, pathLapZona, connection);
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("zona", varSplitZona);
+                        map.put("logo", ImageIO.read(new ByteArrayInputStream(JRLoader.loadBytes(logo))));
+                        
+                        map.put(JRParameter.REPORT_CONNECTION, connection);
+                        map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
+                        final SwingWorker<JasperPrint, String> worker = new SwingWorker<JasperPrint, String>(){
                             
-                            return print;
-                        }
-                        
-                    };
-                    Window win = SwingUtilities.getWindowAncestor((AbstractButton)evt.getSource());
-                    ProgressbarLoading loding = new ProgressbarLoading();
-                    worker.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
-                        if (evt1.getPropertyName().equals("state")) {
-                            if (evt1.getNewValue() == SwingWorker.StateValue.DONE) {
-                                loding.dispose();
+                            @Override
+                            protected JasperPrint doInBackground() throws Exception {
+                                JasperPrint print;
+                                print = displayReport(map, pathLapZona, connection);
+                                
+                                return print;
                             }
-                        }
-                    });
-                    worker.execute();
-                    loding.pack();
-                    loding.setLocationRelativeTo(win);
-                    loding.setVisible(true);
+                            
+                        };
+                        Window win = SwingUtilities.getWindowAncestor((AbstractButton)evt.getSource());
+                        ProgressbarLoading loding = new ProgressbarLoading();
+                        worker.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
+                            if (evt1.getPropertyName().equals("state")) {
+                                if (evt1.getNewValue() == SwingWorker.StateValue.DONE) {
+                                    loding.dispose();
+                                }
+                            }
+                        });
+                        worker.execute();
+                        loding.pack();
+                        loding.setLocationRelativeTo(win);
+                        loding.setVisible(true);
+                    } catch (JRException | IOException ex) {
+                        Logger.getLogger(LaporanMaster.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             });
             session.close();
@@ -1209,6 +1259,7 @@ public class LaporanMaster extends javax.swing.JPanel {
             Session session = sessionFactory.openSession();
             
             session.doWork((Connection connection) -> {
+            try {
                 String varLot = comboLot.getSelectedItem().toString();
                 String[] arrayLot;
                 String varSplitLot;
@@ -1220,8 +1271,12 @@ public class LaporanMaster extends javax.swing.JPanel {
                     varSplitLot = arrayLot[3];
                     System.out.println("Split Zona string: "+varSplitLot);
                 }
+                InputStream logo = getClass().getResourceAsStream("/com/imam/sp_checklist/report/secure-logo.png");
+                
                 Map<String, Object> map = new HashMap<>();
                 map.put("lot", varSplitLot);
+                map.put("logo", ImageIO.read(new ByteArrayInputStream(JRLoader.loadBytes(logo))));
+                
                 map.put(JRParameter.REPORT_CONNECTION, connection);
                 map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
                 final SwingWorker<JasperPrint, String> worker = new SwingWorker<JasperPrint, String>(){
@@ -1248,6 +1303,9 @@ public class LaporanMaster extends javax.swing.JPanel {
                 loding.pack();
                 loding.setLocationRelativeTo(win);
                 loding.setVisible(true);
+            } catch (JRException | IOException ex) {
+                Logger.getLogger(LaporanMaster.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
             session.close();
         
@@ -1261,14 +1319,20 @@ public class LaporanMaster extends javax.swing.JPanel {
             Session session = sessionFactory.openSession();
             
             session.doWork((Connection connection) -> {
+            try {
                 String varSip;
                 if(comboShift.getSelectedItem().equals("All")){
                     varSip = "";
                 }else{
                     varSip = comboShift.getSelectedItem().toString();
                 }
+                InputStream logo = getClass().getResourceAsStream("/com/imam/sp_checklist/report/secure-logo.png");
+                
+                
                 Map<String, Object> map = new HashMap<>();
                 map.put("shift", varSip);
+                map.put("logo", ImageIO.read(new ByteArrayInputStream(JRLoader.loadBytes(logo))));
+                
                 map.put(JRParameter.REPORT_CONNECTION, connection);
                 map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
                 final SwingWorker<JasperPrint, String> worker = new SwingWorker<JasperPrint, String>(){
@@ -1295,6 +1359,9 @@ public class LaporanMaster extends javax.swing.JPanel {
                 loding.pack();
                 loding.setLocationRelativeTo(win);
                 loding.setVisible(true);
+            } catch (JRException | IOException ex) {
+                Logger.getLogger(LaporanMaster.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
             session.close();
         
@@ -1308,6 +1375,7 @@ public class LaporanMaster extends javax.swing.JPanel {
             Session session = sessionFactory.openSession();
             
             session.doWork((Connection connection) -> {
+            try {
                 ///BASEMENT///////
                 String varBs = comboBasementArea.getSelectedItem().toString();
                 String[] arrayBs;
@@ -1344,10 +1412,15 @@ public class LaporanMaster extends javax.swing.JPanel {
                     varSplitLot = arrayLot[2];
                     System.out.println("Split Zona string: "+varSplitLot);
                 }
+                InputStream logo = getClass().getResourceAsStream("/com/imam/sp_checklist/report/secure-logo.png");
+                
+                
                 Map<String, Object> map = new HashMap<>();
                 map.put("basement", varSplitBs);
                 map.put("zona", varSplitZona);
                 map.put("lot", varSplitLot);
+                map.put("logo", ImageIO.read(new ByteArrayInputStream(JRLoader.loadBytes(logo))));
+                
                 map.put(JRParameter.REPORT_CONNECTION, connection);
                 map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
                 final SwingWorker<JasperPrint, String> worker = new SwingWorker<JasperPrint, String>(){
@@ -1374,6 +1447,9 @@ public class LaporanMaster extends javax.swing.JPanel {
                 loding.pack();
                 loding.setLocationRelativeTo(win);
                 loding.setVisible(true);
+            } catch (JRException | IOException ex) {
+                Logger.getLogger(LaporanMaster.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
             session.close();
         

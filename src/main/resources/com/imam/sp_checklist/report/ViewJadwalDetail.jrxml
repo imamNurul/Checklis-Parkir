@@ -7,6 +7,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<parameter name="bulan" class="java.lang.String"/>
+	<parameter name="logo" class="java.awt.Image" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[SELECT
      vjadwal.`jabatanPengawas`,
@@ -55,9 +56,9 @@ WHERE
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="23" splitType="Stretch">
+		<band height="77" splitType="Stretch">
 			<textField pattern="">
-				<reportElement x="0" y="0" width="530" height="19" uuid="37634625-ad66-42f5-b8aa-8b041b88d648"/>
+				<reportElement x="0" y="55" width="530" height="19" uuid="37634625-ad66-42f5-b8aa-8b041b88d648"/>
 				<box>
 					<bottomPen lineWidth="0.5"/>
 				</box>
@@ -66,6 +67,10 @@ WHERE
 				</textElement>
 				<textFieldExpression><![CDATA["SCHEDULE ALL STAFF PERIODE "+$F{bulan}.toUpperCase()+" "+$F{tahun}.toString()]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="416" y="0" width="114" height="55" uuid="fc1528a6-b2de-4f6e-9d38-06da3540c59a"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<columnHeader>

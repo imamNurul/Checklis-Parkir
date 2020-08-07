@@ -5,6 +5,7 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="grup" class="java.lang.String"/>
 	<parameter name="akses" class="java.lang.String"/>
+	<parameter name="logo" class="java.awt.Image" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select tg.id as id_grup, tg.nama as nama_grup, th.nama as hak_akses from tabel_join_grup_dan_hak_akses ha
 inner join tabel_grup tg on ha.id_grup = tg.id
@@ -39,9 +40,9 @@ where tg.id like '%$P!{grup}%' AND th.nama like '%$P!{akses}%']]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="23" splitType="Stretch">
+		<band height="62" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="5" width="300" height="18" uuid="79ecefa9-9184-4e72-96ab-04c01d96fd31"/>
+				<reportElement x="0" y="42" width="300" height="18" uuid="79ecefa9-9184-4e72-96ab-04c01d96fd31"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -53,6 +54,10 @@ where tg.id like '%$P!{grup}%' AND th.nama like '%$P!{akses}%']]>
 				</textElement>
 				<text><![CDATA[LAPORAN DATA GRUP]]></text>
 			</staticText>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" isLazy="true">
+				<reportElement x="159" y="5" width="141" height="55" uuid="818984e7-7b24-44c4-9efe-657ec7f5d36b"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<columnHeader>

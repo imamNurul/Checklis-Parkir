@@ -8,6 +8,7 @@
 	</parameter>
 	<parameter name="grup" class="java.lang.String"/>
 	<parameter name="flag" class="java.lang.String"/>
+	<parameter name="logo" class="java.awt.Image" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[select tp.*,tk.nama AS pengguna,
 (case when aktif is true then 'Active'
@@ -55,9 +56,9 @@ AND tp.aktif IN ($P!{flag})]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="23" splitType="Stretch">
+		<band height="60" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="5" width="490" height="18" uuid="79ecefa9-9184-4e72-96ab-04c01d96fd31"/>
+				<reportElement x="0" y="42" width="490" height="18" uuid="79ecefa9-9184-4e72-96ab-04c01d96fd31"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -69,6 +70,10 @@ AND tp.aktif IN ($P!{flag})]]>
 				</textElement>
 				<text><![CDATA[LAPORAN DATA PENGGUNA]]></text>
 			</staticText>
+			<image>
+				<reportElement x="328" y="0" width="150" height="60" uuid="7ec940b2-c8a7-44a2-a7ab-53c54a97b370"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<columnHeader>

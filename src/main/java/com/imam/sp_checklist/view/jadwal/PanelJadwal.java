@@ -18,6 +18,8 @@ import com.imam.sp_checklist.widget.ProgressbarLoading;
 import com.stripbandunk.jwidget.model.DynamicTableModel;
 import java.awt.Window;
 import java.beans.PropertyChangeEvent;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -28,6 +30,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -38,6 +41,7 @@ import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
@@ -281,37 +285,45 @@ public class PanelJadwal extends javax.swing.JPanel {
             
             session.doWork((Connection connection) -> {
                 
-                String pathLap = "/com/imam/sp_checklist/report/ViewJadwalDetail.jasper";
-                Map<String, Object> map = new HashMap<>();
-                map.put("id_petugas", kr.getPetugas().getNama());
-                map.put("bulan", kr.getBulan());
-                // map.put("logo",getClass().getResource("/com/imam/sp_checklist/image/SECURE.jpg"));
-                map.put(JRParameter.REPORT_CONNECTION, connection);
-                map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
-                final SwingWorker<JasperPrint, String> worker = new SwingWorker<JasperPrint, String>(){
+                try {
+                    String pathLap = "/com/imam/sp_checklist/report/ViewJadwalDetail.jasper";
                     
-                    @Override
-                    protected JasperPrint doInBackground() throws Exception {
-                        JasperPrint print;
-                        print = displayReport(map, pathLap, connection);
+                    InputStream logo = getClass().getResourceAsStream("/com/imam/sp_checklist/report/secure-logo.png");
+                    
+                    
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("id_petugas", kr.getPetugas().getNama());
+                    map.put("bulan", kr.getBulan());
+                    map.put("logo", ImageIO.read(new ByteArrayInputStream(JRLoader.loadBytes(logo))));
+                    map.put(JRParameter.REPORT_CONNECTION, connection);
+                    map.put(JRParameter.REPORT_LOCALE, new Locale("in", "ID"));
+                    final SwingWorker<JasperPrint, String> worker = new SwingWorker<JasperPrint, String>(){
                         
-                        return print;
-                    }
-                    
-                };
-                Window win = SwingUtilities.getWindowAncestor((AbstractButton)evt.getSource());
-                ProgressbarLoading loding = new ProgressbarLoading();
-                worker.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
-                    if (evt1.getPropertyName().equals("state")) {
-                        if (evt1.getNewValue() == SwingWorker.StateValue.DONE) {
-                            loding.dispose();
+                        @Override
+                        protected JasperPrint doInBackground() throws Exception {
+                            JasperPrint print;
+                            print = displayReport(map, pathLap, connection);
+                            
+                            return print;
                         }
-                    }
-                });
-                worker.execute();
-                loding.pack();
-                loding.setLocationRelativeTo(win);
-                loding.setVisible(true);
+                        
+                    };
+                    Window win = SwingUtilities.getWindowAncestor((AbstractButton)evt.getSource());
+                    ProgressbarLoading loding = new ProgressbarLoading();
+                    worker.addPropertyChangeListener((PropertyChangeEvent evt1) -> {
+                        if (evt1.getPropertyName().equals("state")) {
+                            if (evt1.getNewValue() == SwingWorker.StateValue.DONE) {
+                                loding.dispose();
+                            }
+                        }
+                    });
+                    worker.execute();
+                    loding.pack();
+                    loding.setLocationRelativeTo(win);
+                    loding.setVisible(true);
+                } catch (IOException | JRException ex) {
+                    Logger.getLogger(PanelJadwal.class.getName()).log(Level.SEVERE, null, ex);
+                }
             });
             session.close();
             
