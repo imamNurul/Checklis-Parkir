@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportDataSiswa" pageWidth="841" pageHeight="595" orientation="Landscape" columnWidth="821" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="10" uuid="24eaac14-8652-4e85-bdf6-46bb10ee3d17">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="51"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="pengawas" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -133,23 +133,23 @@ order by pengawas, petugas, Tgl_ceklis, jam ASC]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="65" splitType="Stretch">
+		<band height="48" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="42" width="821" height="23" uuid="79ecefa9-9184-4e72-96ab-04c01d96fd31"/>
+				<reportElement x="0" y="0" width="821" height="48" uuid="79ecefa9-9184-4e72-96ab-04c01d96fd31"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
 					<font fontName="Calibri" size="12" isBold="true"/>
-					<paragraph leftIndent="2"/>
+					<paragraph firstLineIndent="4" leftIndent="2" spacingBefore="4" spacingAfter="4"/>
 				</textElement>
 				<text><![CDATA[LAPORAN DATA CHECKLIST KENDARAAN]]></text>
 			</staticText>
 			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" isLazy="true">
-				<reportElement x="662" y="10" width="141" height="55" uuid="b3518d55-9d3c-48d5-abbd-badaee722a85"/>
+				<reportElement x="680" y="0" width="141" height="43" uuid="b3518d55-9d3c-48d5-abbd-badaee722a85"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 		</band>

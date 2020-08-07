@@ -226,7 +226,9 @@ public class LaporanTransaksi extends javax.swing.JPanel {
 
         buttonGroup2.add(rbAllJadwal);
         rbAllJadwal.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        rbAllJadwal.setSelected(true);
         rbAllJadwal.setText("All");
+        rbAllJadwal.setOpaque(false);
         rbAllJadwal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbAllJadwalActionPerformed(evt);
@@ -235,6 +237,7 @@ public class LaporanTransaksi extends javax.swing.JPanel {
 
         buttonGroup2.add(rbBlnJadwal);
         rbBlnJadwal.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        rbBlnJadwal.setOpaque(false);
         rbBlnJadwal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbBlnJadwalActionPerformed(evt);
@@ -412,6 +415,7 @@ public class LaporanTransaksi extends javax.swing.JPanel {
         rbAllCeklisBln.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
         rbAllCeklisBln.setSelected(true);
         rbAllCeklisBln.setText("All");
+        rbAllCeklisBln.setOpaque(false);
         rbAllCeklisBln.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbAllCeklisBlnActionPerformed(evt);
@@ -420,6 +424,7 @@ public class LaporanTransaksi extends javax.swing.JPanel {
 
         buttonGroup3.add(rbBlnCeklis);
         rbBlnCeklis.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        rbBlnCeklis.setOpaque(false);
         rbBlnCeklis.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbBlnCeklisActionPerformed(evt);
