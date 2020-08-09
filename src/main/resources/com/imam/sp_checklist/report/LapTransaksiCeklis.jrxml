@@ -394,19 +394,6 @@ order by pengawas, petugas, Tgl_ceklis, jam ASC]]>
 	</columnHeader>
 	<detail>
 		<band height="29" splitType="Stretch">
-			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="0" width="25" height="29" uuid="58d5cd9a-0b1c-4d4c-b2ef-8cb6b170787d"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Calibri" size="11"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
-			</textField>
 			<textField pattern="HH:mm:ss">
 				<reportElement x="732" y="0" width="89" height="29" uuid="f6fa9172-97d6-4dc1-9903-85c05014c7dc"/>
 				<box>
@@ -577,6 +564,19 @@ order by pengawas, petugas, Tgl_ceklis, jam ASC]]>
 					<font fontName="Calibri" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cek_plat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="25" height="29" uuid="b4ff9b1a-f381-4a22-85f3-a52097435115"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{grupHeader2_COUNT}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
