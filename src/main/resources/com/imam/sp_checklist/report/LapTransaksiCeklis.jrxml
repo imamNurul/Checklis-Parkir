@@ -578,6 +578,19 @@ order by pengawas, petugas, Tgl_ceklis, jam ASC]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{grupHeader2_COUNT}]]></textFieldExpression>
 			</textField>
+			<textField pattern="###0">
+				<reportElement x="10" y="10" width="29" height="29" uuid="08605952-23ff-4c11-a3fc-e3a412bb920f"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>

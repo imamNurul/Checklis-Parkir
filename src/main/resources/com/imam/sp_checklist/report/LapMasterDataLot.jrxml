@@ -36,6 +36,9 @@ where nama like '%$P!{lot}%']]>
 	<field name="id_zona" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<variable name="noUrut" class="java.lang.Number" calculation="Count">
+		<variableExpression><![CDATA[$F{id}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -105,19 +108,6 @@ where nama like '%$P!{lot}%']]>
 	</columnHeader>
 	<detail>
 		<band height="29" splitType="Stretch">
-			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="0" width="29" height="29" uuid="58d5cd9a-0b1c-4d4c-b2ef-8cb6b170787d"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Calibri" size="11"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement x="152" y="0" width="177" height="29" uuid="d511d143-c2c2-463e-9403-7b15e3f89ef5"/>
 				<box>
@@ -143,6 +133,19 @@ where nama like '%$P!{lot}%']]>
 					<font fontName="Calibri" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement x="0" y="0" width="29" height="29" uuid="1db20762-b076-4f54-8e3f-b1042118ad0e"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{noUrut}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

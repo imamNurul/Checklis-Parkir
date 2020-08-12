@@ -29,6 +29,9 @@
 	<field name="nama" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<variable name="noUrut" class="java.lang.Number" calculation="Count">
+		<variableExpression><![CDATA[$F{id}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -54,7 +57,7 @@
 		</band>
 	</title>
 	<columnHeader>
-		<band height="28" splitType="Stretch">
+		<band height="24" splitType="Stretch">
 			<staticText>
 				<reportElement x="29" y="6" width="112" height="18" uuid="347fbb05-597d-49b1-b187-d1cb94a2a72d"/>
 				<box>
@@ -97,22 +100,9 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="39" splitType="Stretch">
-			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="4" width="29" height="29" uuid="58d5cd9a-0b1c-4d4c-b2ef-8cb6b170787d"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Calibri" size="11"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
-			</textField>
+		<band height="31" splitType="Stretch">
 			<textField>
-				<reportElement x="141" y="4" width="159" height="29" uuid="d511d143-c2c2-463e-9403-7b15e3f89ef5"/>
+				<reportElement x="141" y="1" width="159" height="29" uuid="d511d143-c2c2-463e-9403-7b15e3f89ef5"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -125,7 +115,7 @@
 				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="29" y="4" width="112" height="29" uuid="d8f2d0b2-352e-46a7-8059-9ac49edfad14"/>
+				<reportElement x="29" y="1" width="112" height="29" uuid="d8f2d0b2-352e-46a7-8059-9ac49edfad14"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -136,6 +126,19 @@
 					<font fontName="Calibri" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement x="0" y="1" width="29" height="29" uuid="b39969c9-be9d-4391-b14b-552bb7bddd35"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{noUrut}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -27,7 +27,7 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/com/imam/sp_checklist/image/secure-welcome.jpg"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="        SISTEM APLIKASI PENDATAAN PARKIR KENDARAAN"/>
+        <Property name="text" type="java.lang.String" value="        PENGELOLAAN PARKIR KENDARAAN DI MENARA DEA"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Calibri" size="36" style="1"/>
         </Property>

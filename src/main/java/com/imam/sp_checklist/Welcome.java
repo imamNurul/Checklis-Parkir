@@ -34,7 +34,7 @@ public class Welcome extends javax.swing.JPanel {
 
         buttonImageReflection2.setForeground(new java.awt.Color(0, 0, 0));
         buttonImageReflection2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/imam/sp_checklist/image/secure-welcome.jpg"))); // NOI18N
-        buttonImageReflection2.setText("        SISTEM APLIKASI PENDATAAN PARKIR KENDARAAN");
+        buttonImageReflection2.setText("        PENGELOLAAN PARKIR KENDARAAN DI MENARA DEA");
         buttonImageReflection2.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
         buttonImageReflection2.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         add(buttonImageReflection2, java.awt.BorderLayout.CENTER);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportDataSiswa" pageWidth="841" pageHeight="595" orientation="Landscape" columnWidth="837" leftMargin="2" rightMargin="2" topMargin="2" bottomMargin="2" uuid="24eaac14-8652-4e85-bdf6-46bb10ee3d17">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="104"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="77"/>
 	<parameter name="tgl" class="java.util.Date"/>
 	<parameter name="tglName" class="java.lang.String" isForPrompting="false"/>
@@ -66,6 +66,9 @@ where Tgl_ceklis = $P{tgl} and petugas = $P{petugas} and pengawas = $P{pengawas}
 	<field name="keterangan" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<variable name="noUrut" class="java.lang.Number" calculation="Count">
+		<variableExpression><![CDATA[$F{id}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -469,19 +472,6 @@ where Tgl_ceklis = $P{tgl} and petugas = $P{petugas} and pengawas = $P{pengawas}
 	</columnHeader>
 	<detail>
 		<band height="18" splitType="Stretch">
-			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="0" width="24" height="18" uuid="25c00861-1d4c-4260-84e8-36d8a3ee508d"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Calibri" size="11"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
-			</textField>
 			<textField isStretchWithOverflow="true" pattern="HH:mm:ss">
 				<reportElement x="24" y="0" width="56" height="18" uuid="2507743a-4322-466c-a40f-54a1e18d55b7"/>
 				<box>
@@ -650,6 +640,19 @@ where Tgl_ceklis = $P{tgl} and petugas = $P{petugas} and pengawas = $P{pengawas}
 					<font fontName="Calibri" size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cek_plat}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement x="0" y="0" width="24" height="18" uuid="51ed9ded-00db-4d0f-8bae-6442b20a0ebb"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{noUrut}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

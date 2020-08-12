@@ -125,14 +125,14 @@ public class UbahCeklis extends javax.swing.JDialog {
         comboDopBlkKiri.addItem("Penyok");
         
         comboSpionKnan = new JComboBox<>();
-        comboSpionKnan.addItem("Baik");
-        comboSpionKnan.addItem("Baret");
-        comboSpionKnan.addItem("Penyok");
+        comboSpionKnan.addItem("Nihil");
+        comboSpionKnan.addItem("Retak");
+        comboSpionKnan.addItem("Pecah");
         
         comboSpionKri = new JComboBox<>();
-        comboSpionKri.addItem("Baik");
-        comboSpionKri.addItem("Baret");
-        comboSpionKri.addItem("Penyok");
+        comboSpionKri.addItem("Nihil");
+        comboSpionKri.addItem("Retak");
+        comboSpionKri.addItem("Pecah");
         
         comboKondsBaret = new JComboBox<>();
         comboKondsBaret.addItem("Ya");
